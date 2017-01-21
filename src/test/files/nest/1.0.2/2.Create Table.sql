@@ -1,0 +1,1 @@
+create table third(version varchar(64))

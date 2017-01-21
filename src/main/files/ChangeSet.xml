@@ -1,29 +1,50 @@
-<changeList>
-    <change version="1.0.0">
-        <task name="Create Database">
-            <script>
-                create table test(version integer, test date);
-                alter table test add column another varchar(64);
-                create table second(version varchar(64))
-            </script>
-        </task>
+<changes>
+    <change>
+        <version>1.0.0</version>
+        <tasks>
+            <task>
+                <taskName>Create DB</taskName>
+                <script>
+                    create table test(version integer, test date);
+                    alter table test add column another varchar(64);
+                    create table second(version varchar(64))
+                </script>
+                <type>ScriptTask</type>
+            </task>
+        </tasks>
     </change>
-    <change version="1.0.1">
-        <task name="Fix Bug">
-            <file>src\test\java\test.sql</file>
-        </task>
+    <change>
+        <version>1.0.1</version>
+        <tasks>
+            <task>
+                <taskName>Fix Bug</taskName>
+                <taskOrder>1</taskOrder>
+                <filePath>src\test\files\test.sql</filePath>
+                <type>FileTask</type>
+            </task>
+        </tasks>
     </change>
-    <change version="1.1.0">
-        <task name="Add Feature">
-            <file>classpath:classpathTest.sql</file>
-        </task>
+    <change>
+        <version>1.1.0</version>
+        <tasks>
+            <task>
+                <taskName>Add Feature</taskName>
+                <filePath>classpath:classpathTest.sql</filePath>
+                <type>FileTask</type>
+            </task>
+        </tasks>
     </change>
-    <change version="1.2.0">
-        <task name="New Version" order="1">
-
-        </task>
-        <task name="Security Fix" order="2">
-
-        </task>
+    <change>
+        <version>1.2.0</version>
+        <tasks>
+            <task>
+                <taskName>New Version</taskName>
+                <taskOrder>1</taskOrder>
+            </task>
+            <task>
+                <taskName>Security Fix</taskName>
+                <taskOrder>2</taskOrder>
+            </task>
+        </tasks>
     </change>
-</changeList>
+</changes>
