@@ -1,0 +1,10 @@
+<changes>
+    <change>
+        <tasks>
+            <task>
+                <taskOrder>1</taskOrder>
+                <type>FileTask</type>
+            </task>
+        </tasks>
+    </change>
+</changes>

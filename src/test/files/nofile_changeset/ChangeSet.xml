@@ -1,0 +1,13 @@
+<changes>
+    <change>
+        <version>1.0.0</version>
+        <tasks>
+            <task>
+                <taskName>Alter table</taskName>
+                <taskOrder>1</taskOrder>
+                <filePath>\path\doesnt\exist</filePath>
+                <type>FileTask</type>
+            </task>
+        </tasks>
+    </change>
+</changes>

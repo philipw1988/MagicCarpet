@@ -1,0 +1,1 @@
+create table second(version varchar(64))

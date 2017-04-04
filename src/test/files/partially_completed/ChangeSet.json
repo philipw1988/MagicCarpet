@@ -1,0 +1,30 @@
+[
+    {
+      "version": "1.0.0",
+      "tasks": [
+        {
+          "taskName": "Create Tables",
+          "taskOrder": 1,
+          "script": "create table test(version integer, test date);",
+          "type":"ScriptTask"
+        },
+        {
+          "taskName": "Create Tables 2",
+          "taskOrder": 2,
+          "script": "create table test2(version integer, test date);",
+          "type":"ScriptTask"
+        }
+      ]
+    },
+    {
+      "version": "1.0.1",
+      "tasks": [
+        {
+          "taskName": "Alter table",
+          "taskOrder": 1,
+          "filePath": "src\\test\\files\\test.sql",
+          "type":"FileTask"
+        }
+      ]
+    }
+  ]
