@@ -55,7 +55,8 @@ open class MagicCarpet(protected val databaseConnector: DatabaseConnector,
     val createTable = true
 
     // Sets the base path to either the supplied value or searches for a ChangeSet.xml or ChangeSet.json
-    protected val path = basePath ?: getJsonOrXmlPath(Paths.get("."))
+    private val uri = this.javaClass.classLoader.getResource(".").toURI()
+    protected val path = basePath ?: getJsonOrXmlPath(Paths.get(uri))
 
     protected val jsonMapper: ObjectMapper = ObjectMapper().registerModule(KotlinModule())
     protected val xmlMapper: ObjectMapper = XmlMapper().registerModule(KotlinModule())

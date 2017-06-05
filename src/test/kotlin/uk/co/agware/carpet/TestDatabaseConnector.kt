@@ -2,10 +2,7 @@ package uk.co.agware.carpet
 
 import com.nhaarman.mockito_kotlin.*
 import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.given
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
+import org.jetbrains.spek.api.dsl.*
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
 import uk.co.agware.carpet.database.DefaultDatabaseConnector
@@ -15,10 +12,14 @@ import uk.co.agware.carpet.exception.MagicCarpetParseException
 import uk.co.agware.carpet.extensions.assertEqualsIgnoreIndent
 import uk.co.agware.carpet.stubs.ResultsSetStub
 import java.sql.*
-import kotlin.test.*
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 @RunWith(JUnitPlatform::class)
-class TestDatabaseConnector: Spek({
+class TestDatabaseConnector: Spek(spek)
+private val spek: Dsl.() -> Unit = {
 
   describe("A Database Connection") {
 
@@ -505,4 +506,4 @@ class TestDatabaseConnector: Spek({
           }
       }
   }
-})
+}

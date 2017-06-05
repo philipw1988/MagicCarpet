@@ -2,10 +2,7 @@ package uk.co.agware.carpet
 
 import com.nhaarman.mockito_kotlin.*
 import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.given
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
+import org.jetbrains.spek.api.dsl.*
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
 import uk.co.agware.carpet.change.tasks.FileTask
@@ -21,9 +18,10 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-
 @RunWith(JUnitPlatform::class)
-class TestMagicCarpet: Spek({
+class TestMagicCarpet : Spek(spek)
+
+private val spek: Dsl.() -> Unit = {
 
   describe("MagicCarpet") {
 
@@ -55,7 +53,6 @@ class TestMagicCarpet: Spek({
         assertEquals(2, subject.changes.size)
         assertEquals(1, subject.changes[0].tasks.size)
       }
-
 
       on("Executing changes") {
 
@@ -197,7 +194,7 @@ class TestMagicCarpet: Spek({
       }
 
       it("should fail to parse the changes") {
-        assertFailsWith<MagicCarpetParseException>{
+        assertFailsWith<MagicCarpetParseException> {
           subject.parseChanges()
         }
       }
@@ -212,10 +209,24 @@ class TestMagicCarpet: Spek({
       }
 
       it("should fail to parse the changes") {
-        assertFailsWith<MagicCarpetParseException>{
+        assertFailsWith<MagicCarpetParseException> {
           subject.parseChanges()
         }
 
+      }
+    }
+
+    given("A null file path") {
+
+      beforeEachTest {
+        subject = MagicCarpet(connector, basePath = null)
+        whenever(connector.versionExists(any())).thenReturn(false)
+      }
+
+      it("should use root to parse the changes") {
+        subject.parseChanges()
+        assertEquals(1, subject.changes.size)
+        assertEquals(1, subject.changes[0].tasks.size)
       }
     }
 
@@ -228,7 +239,7 @@ class TestMagicCarpet: Spek({
       }
 
       it("should fail to parse the changes") {
-        assertFailsWith<MagicCarpetParseException>{
+        assertFailsWith<MagicCarpetParseException> {
           subject.parseChanges()
         }
       }
@@ -243,7 +254,7 @@ class TestMagicCarpet: Spek({
       }
 
       it("should fail to parse the changes") {
-        assertFailsWith<MagicCarpetParseException>{
+        assertFailsWith<MagicCarpetParseException> {
           subject.parseChanges()
         }
       }
@@ -316,17 +327,17 @@ class TestMagicCarpet: Spek({
           verify(connector).versionExists("1.0.1")
         }
 
-        it("should check the task exists"){
+        it("should check the task exists") {
           verify(connector).taskExists("1.0.0", "Create Tables")
           verify(connector).taskExists("1.0.1", "Alter table")
         }
 
-        it("should update the task hash"){
+        it("should update the task hash") {
 
-         val firstCaptor = argumentCaptor<String>()
-         val secondCaptor = argumentCaptor<String>()
-         val thirdCaptor = argumentCaptor<String>()
-         verify(connector, times(2)).updateTaskHash(firstCaptor.capture(), secondCaptor.capture(), thirdCaptor.capture())
+          val firstCaptor = argumentCaptor<String>()
+          val secondCaptor = argumentCaptor<String>()
+          val thirdCaptor = argumentCaptor<String>()
+          verify(connector, times(2)).updateTaskHash(firstCaptor.capture(), secondCaptor.capture(), thirdCaptor.capture())
           assertTrue {
             firstCaptor.allValues.contains("1.0.0")
             firstCaptor.allValues.contains("1.0.1")
@@ -346,9 +357,9 @@ class TestMagicCarpet: Spek({
         }
 
         it("should not perform the tasks") {
-            val statementCaptor = argumentCaptor<String>()
-            verify(connector, never()).executeStatement(statementCaptor.capture())
-            assertEquals(0, statementCaptor.allValues.size)
+          val statementCaptor = argumentCaptor<String>()
+          verify(connector, never()).executeStatement(statementCaptor.capture())
+          assertEquals(0, statementCaptor.allValues.size)
         }
 
         it("should not record the tasks") {
@@ -397,22 +408,22 @@ class TestMagicCarpet: Spek({
           assertFalse(connector.versionExists("1.0.1"))
         }
 
-        it("should check the task exists"){
+        it("should check the task exists") {
           verify(connector).taskExists("1.0.0", task1.taskName)
           verify(connector).taskExists("1.0.0", task2.taskName)
           assertTrue(connector.taskExists("1.0.0", task1.taskName))
           assertFalse(connector.taskExists("1.0.0", task2.taskName))
         }
 
-        it("should not check if a task exists when the change doesnt exist"){
+        it("should not check if a task exists when the change doesnt exist") {
           verify(connector, never()).taskExists("1.0.1", task3.taskName)
         }
 
-        it("should update the task hash if the task exists"){
+        it("should update the task hash if the task exists") {
           verify(connector).updateTaskHash("1.0.0", task1.taskName, task1.query)
         }
 
-        it("should not update the task hash if the task doesnt exist"){
+        it("should not update the task hash if the task doesnt exist") {
           verify(connector, never()).updateTaskHash("1.0.0", task2.taskName, task2.query)
           verify(connector, never()).updateTaskHash("1.0.1", task3.taskName, task3.query)
         }
@@ -440,4 +451,4 @@ class TestMagicCarpet: Spek({
     }
 
   }
-})
+}

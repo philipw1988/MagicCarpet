@@ -5,10 +5,7 @@ import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.given
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
+import org.jetbrains.spek.api.dsl.*
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
 import uk.co.agware.carpet.change.tasks.FileTask
@@ -19,7 +16,8 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 @RunWith(JUnitPlatform::class)
-class TestFileTask: Spek({
+class TestFileTask: Spek(spek)
+private val spek: Dsl.() -> Unit = {
 
   describe("A FileTask Object") {
 
@@ -39,7 +37,7 @@ class TestFileTask: Spek({
         it("should execute each task statement") {
           val statements = argumentCaptor<String>()
           verify(connection, times(2))
-                 .executeStatement(statements.capture())
+                  .executeStatement(statements.capture())
           assertEquals(2, statements.allValues.size)
           assertTrue(statements.allValues.contains("SELECT * FROM Classpath"))
           assertTrue(statements.allValues.contains("SELECT * FROM class_path"))
@@ -58,7 +56,7 @@ class TestFileTask: Spek({
         it("should execute each statement in the task") {
           val statements = argumentCaptor<String>()
           verify(connection, times(2))
-                 .executeStatement(statements.capture())
+                  .executeStatement(statements.capture())
           assertEquals(2, statements.allValues.size)
           assertTrue(statements.allValues.contains("SELECT * FROM Table"))
           assertTrue(statements.allValues.contains("SELECT * FROM Other_Table"))
@@ -84,4 +82,4 @@ class TestFileTask: Spek({
       }
     }
   }
-})
+}
