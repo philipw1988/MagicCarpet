@@ -9,6 +9,8 @@
     <version>1.1.0-SNAPSHOT</version>
 
     <properties>
+        <nexus-releases>http://nexus.agware.uk/content/repositories/releases</nexus-releases>
+        <nexus-snapshots>http://nexus.agware.uk/content/repositories/snapshots</nexus-snapshots>
         <java.version>1.8</java.version>
         <junit.version>4.12</junit.version>
         <mockito.version>1.10.19</mockito.version>
@@ -98,40 +100,18 @@
         </dependency>
     </dependencies>
 
-    <dependencyManagement>
-        <dependencies>
-
-        </dependencies>
-    </dependencyManagement>
-
     <distributionManagement>
         <repository>
             <id>releases</id>
             <name>Releases</name>
-            <url>http://${nexus-url}/content/repositories/releases</url>
+            <url>${nexus-releases}</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
             <name>Snapshots</name>
-            <url>http://${nexus-url}/content/repositories/snapshots</url>
+            <url>${nexus-snapshots}</url>
         </snapshotRepository>
     </distributionManagement>
-
-    <repositories>
-        <repository>
-            <id>releases</id>
-            <name>Releases</name>
-            <url>http://${nexus-url}/content/repositories/releases/</url>
-        </repository>
-        <repository>
-            <id>snapshots</id>
-            <url>http://${nexus-url}/content/repositories/snapshots/</url>
-            <name>Snapshots</name>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <build>
         <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>

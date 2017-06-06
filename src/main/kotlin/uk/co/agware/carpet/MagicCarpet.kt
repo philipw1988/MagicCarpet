@@ -199,9 +199,9 @@ open class MagicCarpet(protected val databaseConnector: DatabaseConnector,
                           else -> change.tasks.forEach { task -> runTask(change.version, task, connector) }
                       }
                   }
-            }
-            catch (e: MagicCarpetException) {
+            } catch (e: MagicCarpetException) {
                 connector.rollBack()
+                throw e
             }
             connector.commit()
         }

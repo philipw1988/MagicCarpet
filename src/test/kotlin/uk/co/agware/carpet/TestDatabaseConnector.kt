@@ -68,8 +68,8 @@ private val spek: Dsl.() -> Unit = {
           }
 
           on("checking a version exists") {
-              val expectedStatement = """"SELECT * FROM change_set
-                                          WHERE version = ?"""
+              val expectedStatement = """SELECT * FROM change_set
+                                         WHERE version = ?"""
               val statementCaptor = argumentCaptor<String>()
               val version = "1.0.0"
 
@@ -141,8 +141,8 @@ private val spek: Dsl.() -> Unit = {
                   assertEqualsIgnoreIndent(expectedStatement, statementCaptor.value)
                   verify(preparedStatement).setString(1, version)
                   verify(preparedStatement).setString(2, task)
-                  verify(preparedStatement).setString(3, query.toMD5())
-                  verify(preparedStatement).setDate(any(), any())
+                  verify(preparedStatement).setDate(eq(3), any())
+                  verify(preparedStatement).setString(4, query.toMD5())
               }
 
               it("Should execute the statement") {
@@ -263,21 +263,21 @@ private val spek: Dsl.() -> Unit = {
 
       given("A change set table with a matching change set") {
 
+          val query = "SELECT * FROM Table"
+
           beforeEachTest {
               whenever(preparedStatement.executeQuery())
-                      .thenReturn(ResultsSetStub(hash = "d9e135aa2e478e4bb7d6d735ba5c75e4"))
+                      .thenReturn(ResultsSetStub(hasNext = true, hash = query.toMD5()))
           }
 
           on("checking a change sets hash column matches") {
               val expectedStatement = """SELECT * FROM change_set
                                          WHERE version = ?
                                              AND task = ?
-                                             AND hash = ?
                                       """
               val statementCaptor = argumentCaptor<String>()
               val version = "1.0.0"
               val taskName = "Task Name"
-              val query = "SELECT * FROM Table"
               val result = subject.taskHashMatches(version, taskName, query)
 
               it("Should prepare the statement") {
@@ -291,10 +291,6 @@ private val spek: Dsl.() -> Unit = {
 
               it("Should record populate the statement with the value of the task name") {
                   verify(preparedStatement).setString(2, taskName)
-              }
-
-              it("Should record populate the statement with the value of the query") {
-                  verify(preparedStatement).setString(3, query.toMD5())
               }
 
               it("Should execute the statement") {
@@ -317,7 +313,6 @@ private val spek: Dsl.() -> Unit = {
               val expectedStatement = """SELECT * FROM change_set
                                          WHERE version = ?
                                              AND task = ?
-                                             AND hash = ?
                                       """
               val statementCaptor = argumentCaptor<String>()
               val version = "1.0.0"
@@ -336,10 +331,6 @@ private val spek: Dsl.() -> Unit = {
 
               it("Should record populate the statement with the value of the task name") {
                   verify(preparedStatement).setString(2, taskName)
-              }
-
-              it("Should record populate the statement with the value of the query") {
-                  verify(preparedStatement).setString(3, query.toMD5())
               }
 
               it("Should execute the statement") {
@@ -362,7 +353,6 @@ private val spek: Dsl.() -> Unit = {
               val expectedStatement = """SELECT * FROM change_set
                                          WHERE version = ?
                                              AND task = ?
-                                             AND hash = ?
                                       """
               val statementCaptor = argumentCaptor<String>()
               val version = "1.0.0"
@@ -386,10 +376,6 @@ private val spek: Dsl.() -> Unit = {
 
               it("Should record populate the statement with the value of the task name") {
                   verify(preparedStatement).setString(2, taskName)
-              }
-
-              it("Should record populate the statement with the value of the query") {
-                  verify(preparedStatement).setString(3, query.toMD5())
               }
 
               it("Should execute the statement and fail with an exception") {
@@ -427,11 +413,11 @@ private val spek: Dsl.() -> Unit = {
               }
 
               it("Should execute the statement") {
-                  verify(preparedStatement).executeQuery()
+                  verify(preparedStatement).executeUpdate()
               }
 
-              it("Should commit the changes") {
-                  verify(connection).commit()
+              it("Should commit NOT the changes") {
+                  verify(connection, times(0)).commit()
               }
           }
       }
@@ -447,6 +433,7 @@ private val spek: Dsl.() -> Unit = {
               whenever(connection.close()).thenThrow(SQLException())
               whenever(connection.rollback()).thenThrow(SQLException())
               whenever(preparedStatement.executeQuery()).thenThrow(SQLException())
+              whenever(preparedStatement.executeUpdate()).thenThrow(SQLException())
               whenever(preparedStatement.execute()).thenThrow(SQLException())
               whenever(statement.execute(any())).thenThrow(SQLException())
           }
