@@ -15,6 +15,7 @@ import uk.co.agware.carpet.exception.MagicCarpetDatabaseException
 import uk.co.agware.carpet.exception.MagicCarpetException
 import uk.co.agware.carpet.exception.MagicCarpetParseException
 import java.io.IOException
+import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -66,7 +67,8 @@ open class MagicCarpet(private val databaseConnector: DatabaseConnector,
 		} else {
 			val classLoader = this.javaClass.classLoader
 			val base = classLoader.getResource(".") ?: classLoader.getResource("")
-			this.path = Paths.get(base.toURI()).changeSetFile()
+            val uri = base.toURI().toString()
+			this.path = FileSystems.getDefault().getPath(uri).changeSetFile()
 		}
     }
 
