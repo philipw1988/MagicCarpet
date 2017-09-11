@@ -1,2 +1,1 @@
-SELECT *
-FROM Other_Table
+SELECT * FROM Other_Table

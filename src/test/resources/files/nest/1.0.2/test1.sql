@@ -1,2 +1,1 @@
-SELECT *
-FROM Table
+SELECT * FROM Table

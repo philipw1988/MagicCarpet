@@ -29,7 +29,7 @@ private val spek: Dsl.() -> Unit = {
 		}
 
 		given("A file on the classpath") {
-			val task = FileTask("Test Task", 1, "classpath:classpathTest.sql", ",")
+			val task = FileTask("Test Task", 1, "classpath:classpathTest.sql")
 
 			on("performing the task") {
 
@@ -37,8 +37,7 @@ private val spek: Dsl.() -> Unit = {
 
 				it("should execute each task statement") {
 					val statements = argumentCaptor<String>()
-					verify(connection, times(2))
-						.executeStatement(statements.capture())
+					verify(connection, times(2)).executeStatement(statements.capture())
 					assertEquals(2, statements.allValues.size)
 					assertTrue(statements.allValues.contains("SELECT * FROM Classpath"))
 					assertTrue(statements.allValues.contains("SELECT * FROM class_path"))
@@ -56,8 +55,7 @@ private val spek: Dsl.() -> Unit = {
 
 				it("should execute each statement in the task") {
 					val statements = argumentCaptor<String>()
-					verify(connection, times(2))
-						.executeStatement(statements.capture())
+					verify(connection, times(2)).executeStatement(statements.capture())
 					assertEquals(2, statements.allValues.size)
 					assertTrue(statements.allValues.contains("SELECT * FROM Table"))
 					assertTrue(statements.allValues.contains("SELECT * FROM Other_Table"))
