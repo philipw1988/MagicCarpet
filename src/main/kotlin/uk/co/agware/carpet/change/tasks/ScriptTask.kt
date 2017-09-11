@@ -17,21 +17,20 @@ import uk.co.agware.carpet.exception.MagicCarpetParseException
  * Created by Simon on 29/12/2016.
  */
 class ScriptTask @JsonCreator constructor(@JsonProperty("taskName") override var taskName: String,
-                                          @JsonProperty("taskOrder") override var taskOrder: Int,
-                                          @JsonProperty("script") val script: String,
-                                          @JsonProperty("delimiter") delimiter: String = ";"): Task {
+										  @JsonProperty("taskOrder") override var taskOrder: Int,
+										  @JsonProperty("script") val script: String,
+										  @JsonProperty("delimiter") val delimiter: String = ";") : Task {
 
-    val delimiter = if ("" == delimiter) ";" else delimiter
-    val inputList = this.script.split(this.delimiter)
-    override val query = this.script
+	val inputList = this.script.split(this.delimiter)
+	override val query = this.script
 
-    init {
-        if(this.script.isNullOrEmpty()) {
-            throw MagicCarpetParseException("Empty script contents for ${this.taskName}")
-        }
-    }
+	init {
+		if (this.script.isNullOrEmpty()) {
+			throw MagicCarpetParseException("Empty script contents for ${this.taskName}")
+		}
+	}
 
-    override fun performTask(databaseConnector: DatabaseConnector) {
-        this.inputList.forEach { databaseConnector.executeStatement(it.trim()) }
-    }
+	override fun performTask(databaseConnector: DatabaseConnector) {
+		this.inputList.forEach { databaseConnector.executeStatement(it.trim()) }
+	}
 }

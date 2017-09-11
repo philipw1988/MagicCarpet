@@ -16,56 +16,57 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 @RunWith(JUnitPlatform::class)
-class TestScriptTask: Spek(spek)
+class TestScriptTask : Spek(spek)
+
 private val spek: Dsl.() -> Unit = {
 
-    describe("A ScriptTask object") {
+	describe("A ScriptTask object") {
 
-        var connection = mock<DatabaseConnector>()
+		var connection = mock<DatabaseConnector>()
 
-        beforeEachTest {
-            connection = mock<DatabaseConnector>()
-        }
+		beforeEachTest {
+			connection = mock<DatabaseConnector>()
+		}
 
-        given("A Script Task with a default delimiter") {
-            val subject = ScriptTask("Test Task", 1, "SELECT * FROM Table; SELECT * FROM Other_Table")
+		given("A Script Task with a default delimiter") {
+			val subject = ScriptTask("Test Task", 1, "SELECT * FROM Table; SELECT * FROM Other_Table")
 
-            on("Performing the task") {
+			on("Performing the task") {
 
-                subject.performTask(connection)
+				subject.performTask(connection)
 
-                it("should execute each statement") {
-                    val statement = argumentCaptor<String>()
-                    verify(connection,times(2)).executeStatement(statement.capture())
-                    assertEquals(2, statement.allValues.size)
-                    assertTrue(statement.allValues.contains("SELECT * FROM Table"))
-                    assertTrue(statement.allValues.contains("SELECT * FROM Other_Table"))
-                }
-            }
-        }
+				it("should execute each statement") {
+					val statement = argumentCaptor<String>()
+					verify(connection, times(2)).executeStatement(statement.capture())
+					assertEquals(2, statement.allValues.size)
+					assertTrue(statement.allValues.contains("SELECT * FROM Table"))
+					assertTrue(statement.allValues.contains("SELECT * FROM Other_Table"))
+				}
+			}
+		}
 
-        given("a script task with a custom delimiter") {
-            val subject = ScriptTask("Test Task", 1, "SELECT * FROM Table, SELECT * FROM Other_Table", ",")
+		given("a script task with a custom delimiter") {
+			val subject = ScriptTask("Test Task", 1, "SELECT * FROM Table, SELECT * FROM Other_Table", ",")
 
-            on("Performing the task") {
+			on("Performing the task") {
 
-                subject.performTask(connection)
+				subject.performTask(connection)
 
-                it("should execute each statement") {
-                    val statement = argumentCaptor<String>()
-                    verify(connection,times(2)).executeStatement(statement.capture())
-                    assertEquals(2, statement.allValues.size)
-                    assertTrue(statement.allValues.contains("SELECT * FROM Table"))
-                    assertTrue(statement.allValues.contains("SELECT * FROM Other_Table"))
-                }
-            }
-        }
+				it("should execute each statement") {
+					val statement = argumentCaptor<String>()
+					verify(connection, times(2)).executeStatement(statement.capture())
+					assertEquals(2, statement.allValues.size)
+					assertTrue(statement.allValues.contains("SELECT * FROM Table"))
+					assertTrue(statement.allValues.contains("SELECT * FROM Other_Table"))
+				}
+			}
+		}
 
-        it("should fail with a MagicCarpetParseException") {
-            assertFailsWith<MagicCarpetParseException> {
-                ScriptTask("Test Task", 1, "")
-            }
-        }
-    }
+		it("should fail with a MagicCarpetParseException") {
+			assertFailsWith<MagicCarpetParseException> {
+				ScriptTask("Test Task", 1, "")
+			}
+		}
+	}
 
 }

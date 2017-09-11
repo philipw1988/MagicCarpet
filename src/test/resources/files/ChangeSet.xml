@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <changes>
     <change>
         <version>1.0.0</version>
@@ -19,7 +20,7 @@
             <task>
                 <taskName>Alter table</taskName>
                 <taskOrder>1</taskOrder>
-                <filePath>src\test\files\test.sql</filePath>
+                <filePath>classpath:files/test.sql</filePath>
                 <type>FileTask</type>
             </task>
         </tasks>
