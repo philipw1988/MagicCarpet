@@ -6,7 +6,7 @@
 
     <groupId>io.agware</groupId>
     <artifactId>magic-carpet</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0-SNAPSHOT</version>
 
     <properties>
         <nexus-releases>http://nexus.agware.uk/content/repositories/releases</nexus-releases>
