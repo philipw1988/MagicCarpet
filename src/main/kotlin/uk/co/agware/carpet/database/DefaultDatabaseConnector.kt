@@ -65,9 +65,9 @@ open class DefaultDatabaseConnector(private val connection: Connection, private 
 	}
 
 	override fun recordTask(version: String, taskName: String, query: String) {
-		val sql: String = """INSERT INTO $TABLE_NAME
-                             ($VERSION_COLUMN, $TASK_COLUMN, $DATE_COLUMN, $HASH_COLUMN)
-                             VALUES (?, ?, ?, ?)"""
+		val sql = """INSERT INTO $TABLE_NAME
+					 ($VERSION_COLUMN, $TASK_COLUMN, $DATE_COLUMN, $HASH_COLUMN)
+					 VALUES (?, ?, ?, ?)"""
 		try {
 			val statement = this.connection.prepareStatement(sql)
 			statement.use { stmt ->
@@ -204,12 +204,12 @@ open class DefaultDatabaseConnector(private val connection: Connection, private 
 
 					// If there is no hash then we return false
 					val storedHash = rs.getString(HASH_COLUMN) ?: return false
-
+					val queryHash = query.toMD5()
 					// Check if the hashes match
-					if (storedHash == query.toMD5()) {
+					if (storedHash == queryHash) {
 						return true
 					}
-					throw MagicCarpetParseException("Stored Hash and calculated hash for $version $taskName do not match")
+					throw MagicCarpetParseException("Stored Hash and calculated hash for $version $taskName do not match.\nExpected: $storedHash\nActual: $queryHash")
 				}
 			}
 		}
@@ -247,29 +247,6 @@ open class DefaultDatabaseConnector(private val connection: Connection, private 
 		}
 		catch (e: SQLException) {
 			throw MagicCarpetDatabaseException("Could not roll back changes. ${e.message}")
-		}
-	}
-}
-
-/* Implementing Closable.use onto AutoClosable */
-inline fun <T : AutoCloseable, R> T.use(block: (closable: T) -> R): R {
-	var closed = false
-	try {
-		return block(this)
-	}
-	catch (e: Exception) {
-		closed = true
-		try {
-			this.close()
-		}
-		catch (closeException: Exception) {
-			// Eat it
-		}
-		throw e
-	}
-	finally {
-		if (!closed) {
-			this.close()
 		}
 	}
 }

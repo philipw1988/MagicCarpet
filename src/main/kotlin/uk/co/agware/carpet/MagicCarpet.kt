@@ -10,7 +10,6 @@ import uk.co.agware.carpet.change.Change
 import uk.co.agware.carpet.change.tasks.FileTask
 import uk.co.agware.carpet.change.tasks.Task
 import uk.co.agware.carpet.database.DatabaseConnector
-import uk.co.agware.carpet.database.use
 import uk.co.agware.carpet.exception.MagicCarpetDatabaseException
 import uk.co.agware.carpet.exception.MagicCarpetException
 import uk.co.agware.carpet.exception.MagicCarpetParseException
@@ -44,7 +43,7 @@ open class MagicCarpet(private val databaseConnector: DatabaseConnector,
 					   val isDevMode: Boolean = false) {
 
 	companion object {
-		val VERSION_TEST = Regex(""".*\d\.\d(\.\d)+$""")
+		val VERSION_TEST = Regex(""".*\d+\.\d+(\.\d+)+$""")
 		// Will match three groups, the first being potentially a number, the second being potentially
 		// some set of separating characters and the third being everything else, this is for matching
 		// file names such as "12 - Create new Table" and "1.Add some things" and extracting both the
