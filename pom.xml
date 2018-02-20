@@ -19,7 +19,7 @@
         <kotlin.version>1.2.0</kotlin.version>
         <kotlin.dom.version>0.0.10</kotlin.dom.version>
         <jackson.version>2.9.4</jackson.version>
-        <spek.version>1.1.5</spek.version>
+        <spek.version>1.1.0-beta2</spek.version>
         <mockito.kotlin.version>1.5.0</mockito.kotlin.version>
     </properties>
 

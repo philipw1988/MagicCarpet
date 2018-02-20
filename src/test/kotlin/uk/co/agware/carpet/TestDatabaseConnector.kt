@@ -78,7 +78,7 @@ private val spek: Dsl.() -> Unit = {
 
 				it("should prepare the statement") {
 					verify(connection).prepareStatement(statementCaptor.capture())
-					assertEqualsIgnoreIndent(expectedStatement, statementCaptor.value)
+					assertEqualsIgnoreIndent(expectedStatement, statementCaptor.firstValue)
 				}
 
 				it("should correctly set the first parameter to the version") {
@@ -103,7 +103,7 @@ private val spek: Dsl.() -> Unit = {
 
 				it("should create a PreparedStatement") {
 					verify(connection).prepareStatement(statementCaptor.capture())
-					assertEqualsIgnoreIndent(expectedStatement, statementCaptor.value)
+					assertEqualsIgnoreIndent(expectedStatement, statementCaptor.firstValue)
 				}
 
 				it("should correctly set the first parameter as the version") {
@@ -139,7 +139,7 @@ private val spek: Dsl.() -> Unit = {
 				}
 
 				it("should set the correct parameters on the statement") {
-					assertEqualsIgnoreIndent(expectedStatement, statementCaptor.value)
+					assertEqualsIgnoreIndent(expectedStatement, statementCaptor.firstValue)
 					verify(preparedStatement).setString(1, version)
 					verify(preparedStatement).setString(2, task)
 					verify(preparedStatement).setDate(eq(3), any())
@@ -283,7 +283,7 @@ private val spek: Dsl.() -> Unit = {
 
 				it("Should prepare the statement") {
 					verify(connection).prepareStatement(statementCaptor.capture())
-					assertEqualsIgnoreIndent(expectedStatement, statementCaptor.value)
+					assertEqualsIgnoreIndent(expectedStatement, statementCaptor.firstValue)
 				}
 
 				it("Should record populate the statement with the value of the version") {
@@ -323,7 +323,7 @@ private val spek: Dsl.() -> Unit = {
 
 				it("Should prepare the statement") {
 					verify(connection).prepareStatement(statementCaptor.capture())
-					assertEqualsIgnoreIndent(expectedStatement, statementCaptor.value)
+					assertEqualsIgnoreIndent(expectedStatement, statementCaptor.firstValue)
 				}
 
 				it("Should record populate the statement with the value of the version") {
@@ -368,7 +368,7 @@ private val spek: Dsl.() -> Unit = {
 
 				it("Should prepare the statement") {
 					verify(connection).prepareStatement(statementCaptor.capture())
-					assertEqualsIgnoreIndent(expectedStatement, statementCaptor.value)
+					assertEqualsIgnoreIndent(expectedStatement, statementCaptor.firstValue)
 				}
 
 				it("Should record populate the statement with the value of the version") {
@@ -407,7 +407,7 @@ private val spek: Dsl.() -> Unit = {
 				}
 
 				it("Should set the statement values") {
-					assertEqualsIgnoreIndent(expectedStatement, statementCaptor.value)
+					assertEqualsIgnoreIndent(expectedStatement, statementCaptor.firstValue)
 					verify(preparedStatement).setString(1, query.toMD5())
 					verify(preparedStatement).setString(2, version)
 					verify(preparedStatement).setString(3, task)
