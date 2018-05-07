@@ -1,4 +1,4 @@
-# MagicCarpet
+# MagicCarpet!
 
 The Magic Carpet is a fun game played in a field with a group of guys who aren't fully aware of their own mortality, the basic idea is that you tow a piece of carpet around a field behind a tractor, on the carpet are a group of people who then fight to see who is the last man standing. Shockingly there have been no recorded instances of major injuries from this activity, however it was retired quite a few years ago now, but the legend lives on.
 
